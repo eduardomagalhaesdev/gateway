@@ -1,0 +1,55 @@
+{
+  "generator-jhipster": {
+    "applicationType": "gateway",
+    "authenticationType": "oauth2",
+    "baseName": "gateway",
+    "blueprints": [],
+    "buildTool": "maven",
+    "cacheProvider": "no",
+    "clientFramework": "angularX",
+    "clientPackageManager": "npm",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "creationTimestamp": 1718805114624,
+    "databaseType": "no",
+    "devDatabaseType": "no",
+    "devServerPort": 4200,
+    "dtoSuffix": "DTO",
+    "enableGradleEnterprise": false,
+    "enableHibernateCache": false,
+    "enableSwaggerCodegen": false,
+    "enableTranslation": true,
+    "entitySuffix": "",
+    "jhiPrefix": "jhi",
+    "jhipsterVersion": "7.9.3",
+    "jwtSecretKey": "ZTg1YTE1ZTZiYjQwZDE0OTk2OTRiN2I3YTVjN2E0NDFkODY4MWQyMTYwOGU3NTEyMzhkMjdjOTc5NmZmYzhhMWExYTBkNGEwNzkzOTYxZWZhNDAwZDlmYjA4NTFhYmY5M2Q5MWFjOWU3MGVmYTY4MjZiMjI5N2MyZjhmZGFlZWY=",
+    "languages": ["pt-br", "en"],
+    "messageBroker": false,
+    "microfrontend": true,
+    "microfrontends": [
+      {
+        "baseName": "mFront1"
+      },
+      {
+        "baseName": "mFront2"
+      }
+    ],
+    "nativeLanguage": "pt-br",
+    "otherModules": [],
+    "packageName": "com.mycompany.myapp",
+    "pages": [],
+    "prodDatabaseType": "no",
+    "reactive": true,
+    "searchEngine": false,
+    "serverPort": "8085",
+    "serverSideOptions": [],
+    "serviceDiscoveryType": "eureka",
+    "skipCheckLengthOfIdentifier": false,
+    "skipClient": false,
+    "skipFakeData": false,
+    "skipUserManagement": true,
+    "testFrameworks": [],
+    "websocket": false,
+    "withAdminUi": true
+  }
+}
