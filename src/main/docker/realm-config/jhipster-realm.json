@@ -48,7 +48,7 @@
     "realm": [
       {
         "id": "8e986fb5-dafb-43bf-a7c2-7e57572d3d80",
-        "name": "ROLE_ADMIN",
+        "name": "_ADMIN",
         "description": "Jhipster administrator role",
         "composite": false,
         "clientRole": false,

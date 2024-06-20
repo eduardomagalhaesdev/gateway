@@ -1,0 +1,33 @@
+{
+  "gatewayApp": {
+    "serviceProcesso": {
+      "home": {
+        "title": "Processos",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Processo",
+        "createOrEditLabel": "Create or edit a Processo",
+        "notFound": "No Processos found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Processo {{ id }}?"
+      },
+      "detail": {
+        "title": "Processo"
+      },
+      "id": "ID",
+      "npu": "Npu",
+      "dataCadastro": "Data Cadastro",
+      "municipio": "Municipio",
+      "uf": "Uf",
+      "anexoPdf": "Anexo Pdf",
+      "upload": "Upload"
+    }
+  },
+  "serviceApp": {
+    "serviceProcesso": {
+      "created": "A new Processo is created with identifier {{ param }}",
+      "updated": "A Processo is updated with identifier {{ param }}",
+      "deleted": "A Processo is deleted with identifier {{ param }}"
+    }
+  }
+}

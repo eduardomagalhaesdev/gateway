@@ -1,7 +1,8 @@
 {
   "generator-jhipster:7.9.3": {
     "promptValues": {
-      "nativeLanguage": "pt-br"
+      "nativeLanguage": "pt-br",
+      "microservicePath": "../service"
     }
   }
 }

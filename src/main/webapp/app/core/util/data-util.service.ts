@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable, Observer } from 'rxjs';
 
-export type FileLoadErrorType = 'not.image' | 'could.not.extract';
+export type FileLoadErrorType = 'not.pdf' | 'could.not.extract';
 
 export interface FileLoadError {
   message: string;
@@ -62,10 +62,10 @@ export class DataUtils {
       const eventTarget: HTMLInputElement | null = event.target as HTMLInputElement | null;
       if (eventTarget?.files?.[0]) {
         const file: File = eventTarget.files[0];
-        if (isImage && !file.type.startsWith('image/')) {
+        if (isImage && file.type.startsWith('image/')) {
           const error: FileLoadError = {
             message: `File was expected to be an image but was found to be '${file.type}'`,
-            key: 'not.image',
+            key: 'not.pdf',
             params: { fileType: file.type },
           };
           observer.error(error);

@@ -1,0 +1,150 @@
+<div>
+  <h2 id="page-heading" data-cy="ProcessoHeading">
+    <span jhiTranslate="gatewayApp.serviceProcesso.home.title">Processos</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="gatewayApp.serviceProcesso.home.refreshListLabel">Atualizar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-processo"
+        [routerLink]="['/processo/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="gatewayApp.serviceProcesso.home.createLabel"> Criar novo Processo </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="processos?.length === 0">
+    <span jhiTranslate="gatewayApp.serviceProcesso.home.notFound">Nenhum Processo encontrado</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="processos && processos.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">Código</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="npu">
+            <div class="d-flex">
+              <span jhiTranslate="gatewayApp.serviceProcesso.npu">Npu</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="dataCadastro">
+            <div class="d-flex">
+              <span jhiTranslate="gatewayApp.serviceProcesso.dataCadastro">Data Cadastro</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="municipio">
+            <div class="d-flex">
+              <span jhiTranslate="gatewayApp.serviceProcesso.municipio">Municipio</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="uf">
+            <div class="d-flex">
+              <span jhiTranslate="gatewayApp.serviceProcesso.uf">Uf</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="anexoPdf">
+            <div class="d-flex">
+              <span jhiTranslate="gatewayApp.serviceProcesso.anexoPdf">Anexo Pdf</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="upload">
+            <div class="d-flex">
+              <span jhiTranslate="gatewayApp.serviceProcesso.upload">Upload</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let processo of processos; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/processo', processo.id, 'view']">{{ processo.id }}</a>
+          </td>
+          <td>{{ processo.npu }}</td>
+          <td>{{ processo.dataCadastro | formatMediumDate }}</td>
+          <td>{{ processo.municipio }}</td>
+          <td>{{ processo.uf }}</td>
+          <td>
+            <a *ngIf="processo.anexoPdf" (click)="openFile(processo.anexoPdf, processo.anexoPdfContentType)">
+              <img
+                [src]="'data:' + processo.anexoPdfContentType + ';base64,' + processo.anexoPdf"
+                style="max-height: 30px"
+                alt="processo image"
+              />
+            </a>
+            <span *ngIf="processo.anexoPdf">{{ processo.anexoPdfContentType }}, {{ byteSize(processo.anexoPdf) }}</span>
+          </td>
+          <td>{{ processo.upload }}</td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/processo', processo.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Visualizar</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/processo', processo.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+              </button>
+
+              <button type="submit" (click)="delete(processo)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Excluir</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="processos && processos.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="processo">
+      <h2 data-cy="processoDetailsHeading"><span jhiTranslate="gatewayApp.serviceProcesso.detail.title">Processo</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">Código</span></dt>
+        <dd>
+          <span>{{ processo.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.serviceProcesso.npu">Npu</span></dt>
+        <dd>
+          <span>{{ processo.npu }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.serviceProcesso.dataCadastro">Data Cadastro</span></dt>
+        <dd>
+          <span>{{ processo.dataCadastro | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.serviceProcesso.municipio">Municipio</span></dt>
+        <dd>
+          <span>{{ processo.municipio }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.serviceProcesso.uf">Uf</span></dt>
+        <dd>
+          <span>{{ processo.uf }}</span>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.serviceProcesso.anexoPdf">Anexo Pdf</span></dt>
+        <dd>
+          <div *ngIf="processo.anexoPdf">
+            <a (click)="openFile(processo.anexoPdf, processo.anexoPdfContentType)">
+              <img
+                [src]="'data:' + processo.anexoPdfContentType + ';base64,' + processo.anexoPdf"
+                style="max-width: 100%"
+                alt="processo image"
+              />
+            </a>
+            {{ processo.anexoPdfContentType }}, {{ byteSize(processo.anexoPdf) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="gatewayApp.serviceProcesso.upload">Upload</span></dt>
+        <dd>
+          <span>{{ processo.upload }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Voltar</span>
+      </button>
+
+      <button type="button" [routerLink]="['/processo', processo.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+      </button>
+    </div>
+  </div>
+</div>

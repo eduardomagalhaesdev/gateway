@@ -1,0 +1,149 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-processo-heading" data-cy="ProcessoCreateUpdateHeading" jhiTranslate="gatewayApp.serviceProcesso.home.createOrEditLabel">
+        Criar ou editar Processo
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gatewayApp.serviceProcesso.npu" for="field_npu">Npu</label>
+          <input type="text" class="form-control" name="npu" id="field_npu" data-cy="npu" formControlName="npu" />
+          <div *ngIf="editForm.get('npu')!.invalid && (editForm.get('npu')!.dirty || editForm.get('npu')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('npu')?.errors?.required" jhiTranslate="entity.validation.required">
+              O campo é obrigatório.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('npu')?.errors?.pattern"
+              jhiTranslate="entity.validation.pattern"
+              [translateValues]="{ pattern: 'Npu' }"
+            >
+              Este campo deve estar dentro do seguinte padrão Npu.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gatewayApp.serviceProcesso.dataCadastro" for="field_dataCadastro">Data Cadastro</label>
+          <div class="input-group">
+            <input
+              id="field_dataCadastro"
+              data-cy="dataCadastro"
+              type="text"
+              class="form-control"
+              name="dataCadastro"
+              ngbDatepicker
+              #dataCadastroDp="ngbDatepicker"
+              formControlName="dataCadastro"
+            />
+            <button type="button" class="btn btn-secondary" (click)="dataCadastroDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+          <div
+            *ngIf="editForm.get('dataCadastro')!.invalid && (editForm.get('dataCadastro')!.dirty || editForm.get('dataCadastro')!.touched)"
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('dataCadastro')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              O campo é obrigatório.
+            </small>
+          </div>
+        </div>
+
+        <div>
+          <label for="uf">UF:</label>
+          <select id="uf" formControlName="uf" (change)="onUfSelected($event)">
+            <option *ngFor="let uf of ufs" [value]="uf.sigla">{{ uf.nome }}</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="municipio">Município:</label>
+          <select id="municipio" formControlName="municipio" required>
+            <option *ngFor="let municipio of municipios" [value]="municipio.nome">{{ municipio.nome }}</option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gatewayApp.serviceProcesso.anexoPdf" for="field_anexoPdf">Anexo Pdf</label>
+          <div>
+            <div *ngIf="editForm.get('anexoPdf')!.value" class="form-text text-danger clearfix">
+              <span class="pull-start"
+                >{{ editForm.get('anexoPdfContentType')!.value }}, {{ byteSize(editForm.get('anexoPdf')!.value!) }}</span
+              >
+              <button
+                type="button"
+                (click)="clearInputImage('anexoPdf', 'anexoPdfContentType', 'file_anexoPdf')"
+                class="btn btn-secondary btn-xs pull-end"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_anexoPdf"
+              data-cy="anexoPdf"
+              (change)="setFileData($event, 'anexoPdf', true)"
+              accept=".pdf*"
+              jhiTranslate="entity.action.addimage"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="anexoPdf" id="field_anexoPdf" data-cy="anexoPdf" formControlName="anexoPdf" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="anexoPdfContentType"
+            id="field_anexoPdfContentType"
+            formControlName="anexoPdfContentType"
+          />
+          <div *ngIf="editForm.get('anexoPdf')!.invalid && (editForm.get('anexoPdf')!.dirty || editForm.get('anexoPdf')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('anexoPdf')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              O campo é obrigatório.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gatewayApp.serviceProcesso.upload" for="field_upload">Nome Arquivo</label>
+          <input type="text" class="form-control" name="upload" id="field_upload" data-cy="upload" formControlName="upload" />
+          <div *ngIf="editForm.get('upload')!.invalid && (editForm.get('upload')!.dirty || editForm.get('upload')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('upload')?.errors?.required" jhiTranslate="entity.validation.required">
+              O campo é obrigatório.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Salvar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
